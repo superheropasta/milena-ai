@@ -196,4 +196,28 @@ import os
 def reproducir_sonido(nombre_archivo):
     if os.path.exists(nombre_archivo):
         playsound(nombre_archivo)
+
+import os
+import replicate
+
+def generar_imagen_cloud(prompt):
+    """
+    Llama al modelo de Stable Diffusion en Replicate
+    para generar una imagen a partir de un prompt.
+    Devuelve la URL de la primera imagen.
+    """
+    # Carga el token desde la variable de entorno
+    os.environ["REPLICATE_API_TOKEN"] = os.getenv("REPLICATE_API_TOKEN", "")
+    
+    model = replicate.models.get("stability-ai/stable-diffusion")
+    # Ajusta width, height, steps para balance velocidad/Calidad
+    output_urls = model.predict(
+        prompt=prompt,
+        width=512,
+        height=512,
+        num_inference_steps=30
+    )
+    # Replicate devuelve una lista de URLs
+    return output_urls[0]
+        
         

@@ -105,6 +105,15 @@ class InterfazMilena:
         elif mensaje in sonidos:
             reproducir_sonido(sonidos[mensaje])
             self.label_estado.config(text="")
+        elif mensaje.lower().startswith("/imagen "):
+            # Tomamos el texto después de "/imagen "
+            subprompt = mensaje[len("/imagen "):].strip()
+            # Le pedimos a Milena una frase de acompañamiento
+            texto = f"Claro, Dante… generando tu imagen: «{subprompt}» 😈"
+            self.mostrar_mensaje("Milena", texto)
+            url = generar_imagen_cloud(subprompt)
+            self.mostrar_mensaje("Milena", url)
+            self.label_estado.config(text="")
             return
         else:
             respuesta = hablar_con_milena(mensaje)
